@@ -147,6 +147,9 @@
 				
 				<filter class="solr.StandardFilterFactory"/>
 				
+				<!-- Before doing other filtering on the URI -->
+				<filter class="org.sindice.siren.solr.analysis.URLEncodingFilterFactory"/>
+				
 				<!-- Extract and tokenise localname of URIs.
 				     Add maxLength=n to not tokenise localname with more than n 
 						 characters. By default, maxLength=64. -->

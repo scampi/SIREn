@@ -4,7 +4,7 @@
  * @link http://renaud.delbru.fr/
  * @copyright Copyright (C) 2009 by Renaud Delbru, All rights reserved.
  */
-package org.sindice.siren.analysis;
+package org.sindice.siren.analysis.bench;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +15,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.util.Version;
+import org.sindice.siren.analysis.TupleAnalyzer;
+import org.sindice.siren.analysis.WhitespaceTupleAnalyzer;
 
 public class TupleAnalyzerBenchmark {
 
