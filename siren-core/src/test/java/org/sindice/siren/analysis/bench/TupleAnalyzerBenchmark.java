@@ -18,6 +18,8 @@ import org.sindice.siren.analysis.DeltaTupleAnalyzer;
 import org.sindice.siren.analysis.TupleAnalyzer;
 import org.sindice.siren.analysis.WhitespaceTupleAnalyzer;
 import org.sindice.siren.bench.SirenBenchmark;
+import org.sindice.siren.analysis.TupleAnalyzer;
+import org.sindice.siren.analysis.WhitespaceTupleAnalyzer;
 
 import com.google.caliper.Param;
 import com.google.caliper.Runner;
