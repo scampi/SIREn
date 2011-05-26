@@ -102,10 +102,6 @@ public final class QNamesFilter extends TokenFilter {
     return c == ':';
   }
 
-  protected boolean isQNameDelim(final char c) {
-    return c == ':';
-  }
-
   /**
    * Convert the QName to the associated namespace. If the prefix is not a
    * qname, it just returns the original prefix.
