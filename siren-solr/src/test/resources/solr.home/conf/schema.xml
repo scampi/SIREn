@@ -145,7 +145,7 @@
 						 Add bnode=0 to not filter blank node tokens. -->
         <filter class="org.sindice.siren.solr.analysis.TokenTypeFilterFactory"/>
 				
-				<filter class="solr.StandardFilterFactory"/>
+				<!-- filter class="solr.StandardFilterFactory"/ -->
 				
 				<!-- Before doing other filtering on the URI -->
 				<filter class="org.sindice.siren.solr.analysis.URLEncodingFilterFactory"/>
@@ -157,6 +157,10 @@
 
         <!-- Remove trailing slash of URIs. -->				
 				<filter class="org.sindice.siren.solr.analysis.URITrailingSlashFilterFactory"/>
+				
+				<!-- Filters out those tokens *not* having length min through max 
+             inclusive. -->
+        <filter class="solr.LengthFilterFactory" min="2" max="256"/>
         
         <!-- Change to lowercase text -->
         <filter class="solr.LowerCaseFilterFactory"/>
@@ -169,10 +173,6 @@
                 words="stopwords.txt"
                 enablePositionIncrements="true"
                 />
-				
-				<!-- Filters out those tokens *not* having length min through max 
-				     inclusive. -->
-				<filter class="solr.LengthFilterFactory" min="2" max="256"/>
 				
 				<!-- Filter converting tuple and cell information in the term payload. -->
 				<filter class="org.sindice.siren.solr.analysis.SirenDeltaPayloadFilterFactory"/>
