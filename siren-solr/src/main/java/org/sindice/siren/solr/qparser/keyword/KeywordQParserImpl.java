@@ -79,7 +79,7 @@ public class KeywordQParserImpl {
 
     final StringBuffer sb = new StringBuffer();
     while (matcher.find()) {
-      matcher.appendReplacement(sb, matcher.group(0).replace(":", "\\\\:"));
+      matcher.appendReplacement(sb, matcher.group(0).replace(":", "\\\\:").replace("~", "\\\\~"));
     }
     matcher.appendTail(sb);
 
@@ -87,15 +87,15 @@ public class KeywordQParserImpl {
   }
 
   /**
-   * Returns a String where <code>:</code> and <code>\</code> are escaped by a
-   * preceding <code>\</code>.
+   * Returns a String where <code>~</code>, <code>:</code> and <code>\</code>
+   * are escaped by a preceding <code>\</code>.
    */
   public static String escape(final String s) {
     final StringBuilder sb = new StringBuilder();
     for (int i = 0; i < s.length(); i++) {
       final char c = s.charAt(i);
       // These characters are part of the field query syntax and must be escaped
-      if (c == ':' || c == '\\') {
+      if (c == ':' || c == '\\' || c == '~') {
         sb.append('\\');
       }
       sb.append(c);

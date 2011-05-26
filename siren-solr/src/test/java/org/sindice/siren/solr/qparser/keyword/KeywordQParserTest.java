@@ -143,4 +143,73 @@ public class KeywordQParserTest {
         "(explicit-content:http://test.org/ label:http://test.org/)", q.toString());
   }
 
+<<<<<<< HEAD:siren-solr/src/test/java/org/sindice/siren/solr/qparser/keyword/KeywordQParserTest.java
+=======
+  // SRN-106: Query expansion does not respect unary operator
+  @Test
+  public void testUnaryOperator() throws ParseException {
+    final Map<String, Float> boosts = new HashMap<String, Float>();
+    boosts.put("explicit-content", 1.0f);
+    final Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_31);
+    final KeywordQParserImpl parser = new KeywordQParserImpl(analyzer, boosts, true);
+
+    parser.setDefaultOperator(Operator.AND);
+    final Query q = parser.parse("+mike +conlon vivo");
+    assertEquals("+explicit-content:mike +explicit-content:conlon explicit-content:vivo",
+                 q.toString());
+  }
+
+  // SRN-106: Query expansion does not respect unary operator
+  @Test
+  public void testUnaryOperatorMultiField() throws ParseException {
+    parser.setDefaultOperator(Operator.AND);
+    final Query q = parser.parse("+mike +conlon vivo");
+    assertEquals("+(explicit-content:mike label:mike^2.5) " +
+                 "+(explicit-content:conlon label:conlon^2.5) " +
+                 "(explicit-content:vivo label:vivo^2.5)",
+                 q.toString());
+  }
+
+  @Test
+  public void testNestedGroups() throws ParseException {
+    final Map<String, Float> boosts = new HashMap<String, Float>();
+    boosts.put("explicit-content", 1.0f);
+    final Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_31);
+    final KeywordQParserImpl parser = new KeywordQParserImpl(analyzer, boosts, true);
+    parser.setDefaultOperator(Operator.AND);
+
+    final Query q = parser.parse("Test AND ((literal OR uri OR resource) AND (pattern OR patterns OR query))");
+    System.out.println(q.toString());
+    assertEquals("+explicit-content:Test " +
+                 "+(+(explicit-content:literal explicit-content:uri explicit-content:resource) " +
+                 "+(explicit-content:pattern explicit-content:patterns explicit-content:query))",
+                 q.toString());
+  }
+  
+  /*
+   * Testing Special Lucene characters
+   */
+  
+  @Test
+  public void testTildeCharacterInURI()
+  throws Exception {
+    final Query q = parser.parse("http://deri.ie/~hello");
+    assertEquals("explicit-content:http://deri.ie/~hello label:http://deri.ie/~hello^2.5",
+        q.toString());
+  }
+  
+  @Test
+  public void testDisabledFieldQueryWithTilde() throws ParseException {
+    final Map<String, Float> boosts = new HashMap<String, Float>();
+    boosts.put("explicit-content", 1.0f);
+    final Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_31);
+    final KeywordQParserImpl parser = new KeywordQParserImpl(analyzer, boosts, true);
+    final Query q = parser.parse("+foaf:name -foaf\\:person domain:dbpedia.org http://deri.ie/~hello");
+    assertEquals("+explicit-content:foaf:name " +
+        "-explicit-content:foaf\\:person " +
+        "explicit-content:domain:dbpedia.org " +
+        "explicit-content:http://deri.ie/~hello", q.toString());
+  }
+
+>>>>>>> f85f03b... added an extension of the DefaultSimilarity class so that the tf function is the BM25 one (i.e., f * (k1 + 1) / (f + k1)).:siren-qparser/src/test/java/org/sindice/siren/qparser/keyword/KeywordQParserTest.java
 }
